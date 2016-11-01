@@ -1,5 +1,7 @@
-# Must be a mysql database!
+# Must be a mysql or postgresql database!
 database_uri = 'mysql://root@localhost/pushjet_api'
+#database_uri = 'postgresql://user:password@localhost/pushjet_api'
+
 
 # Are we debugging the server?
 # Do not turn this on when in production!
