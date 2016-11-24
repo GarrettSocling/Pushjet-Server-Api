@@ -32,3 +32,9 @@ class Message(db.Model):
             "level": self.level,
             "timestamp": int((self.timestamp_created - datetime.utcfromtimestamp(0)).total_seconds())
         }
+    def as_notification(self):
+        return {
+            "title" : self.title,
+            "body" : self.text,
+            "click_action" : self.link
+        }

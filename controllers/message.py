@@ -10,7 +10,6 @@ from json import dumps as json_encode
 
 message = Blueprint('message', __name__)
 
-
 @message.route('/message', methods=['POST'])
 @has_secret
 def message_send(service):
@@ -31,7 +30,6 @@ def message_send(service):
     msg = Message(service, text, title, level, link)
     db.session.add(msg)
     db.session.commit()
-
     if google_api_key or current_app.config['TESTING']:
         Gcm.send_message(msg)
 
