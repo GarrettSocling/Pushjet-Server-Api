@@ -40,7 +40,7 @@ class Service(db.Model):
             .filter(threshold > Message.id) \
             .all()
 
-        map(db.session.delete, messages)
+        list(map(db.session.delete, messages))
 
     def subscribed(self):
         return Subscription.query.filter_by(service=self)

@@ -1,6 +1,6 @@
 #!/usr/bin/env python2.7
 # coding=utf-8
-from __future__ import unicode_literals
+
 from flask import Flask, jsonify, redirect, send_from_directory, request
 from sys import exit, stderr
 from os import getenv
