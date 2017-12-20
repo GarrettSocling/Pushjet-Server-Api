@@ -15,4 +15,3 @@ zeromq_relay_uri = ''
 
 # Apple Push Notifications configuration (required for iOS!)
 apns_cert_path = '/etc/pki/tls/certs/apns.crt'
-apns_key_path = '/etc/pki/tls/private/apns.key'

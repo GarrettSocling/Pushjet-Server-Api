@@ -26,6 +26,10 @@ elif config.google_gcm_sender_id == 0:
     stderr.write('WARNING: GCM disabled, invalid sender id found')
     gcm_enabled = False
 
+apns_enabled = True
+if config.apns_cert_path == '':
+    stderr.write("WARNING: APNs disabled, please add certificate paths in config")
+    apns_enabled = False
 
 app = Flask(__name__)
 app.debug = config.debug or int(getenv('FLASK_DEBUG', 0)) > 0
@@ -63,6 +67,8 @@ app.register_blueprint(message)
 app.register_blueprint(service)
 if gcm_enabled:
     app.register_blueprint(gcm)
+if apns_enabled:
+    app.register_blueprint(apns)
 
 if __name__ == '__main__':
     app.run()

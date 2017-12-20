@@ -2,9 +2,9 @@ from flask import current_app
 from shared import db
 from sqlalchemy.dialects.mysql import INTEGER
 from datetime import datetime
-from config import apns_cert_path, apns_key_path
+from config import apns_cert_path
 from models import Subscription, Message
-from apns2.client import APNsClient
+from apns2.client import APNsClient, Notification
 from apns2.payload import Payload
 
 class Apns(db.Model):
@@ -40,7 +40,7 @@ class Apns(db.Model):
         apns_devices = Apns.query.filter(Apns.uuid.in_([l.device for l in subscriptions])).all()
 
         if len(apns_devices) > 0:
-            Apns.apns_send([r.device_token for i in apns_devices], message.as_dict())
+            Apns.apns_send([r.device_token for r in apns_devices], message.as_dict())
             uuids = [g.uuid for g in apns_devices]
             apns_subscriptions = Subscription.query.filter_by(service=message.service).filter(Subscription.device.in_(uuids)).all()
             last_message = Message.query.order_by(Message.id.desc()).first()
@@ -58,5 +58,5 @@ class Apns(db.Model):
         payload = Payload(alert="Pushjet Notification", sound="default", badge=1)
         notifications = [Notification(token=token, payload=payload) for token in tokens]
         topic = 'me.elrod.iPushjet'
-        client = APNsClient('key.pem', use_sandbox=False, use_alternative_port=False)
+        client = APNsClient(apns_cert_path, use_sandbox=True, use_alternative_port=False)
         client.send_notification_batch(notifications, topic)

@@ -5,7 +5,7 @@ from utils import Error, has_uuid, has_secret, queue_zmq_message
 from shared import db
 from models import Subscription, Message, Gcm, Apns
 from datetime import datetime
-from config import zeromq_relay_uri, google_api_key, apns_cert_path, apns_key_path
+from config import zeromq_relay_uri, google_api_key, apns_cert_path
 from json import dumps as json_encode
 
 message = Blueprint('message', __name__)
@@ -35,7 +35,7 @@ def message_send(service):
     if google_api_key or current_app.config['TESTING']:
         Gcm.send_message(msg)
 
-    if (apns_cert_path and apns_key_path) or current_app.config['TESTING']:
+    if apns_cert_path or current_app.config['TESTING']:
         Apns.send_message(msg)
 
     if zeromq_relay_uri:
