@@ -24,8 +24,10 @@ class PushjetTestCase(unittest.TestCase):
 
         app.config['TESTING'] = True
         app.config['TESTING_GCM'] = []
+        app.config['TESTING_APNS'] = []
 
         self.gcm = app.config['TESTING_GCM']
+        self.apns = app.config['TESTING_APNS']
         self.app = app.test_client()
         self.app_real = app
 
@@ -80,7 +82,7 @@ class PushjetTestCase(unittest.TestCase):
         rv = self.app.delete('/subscription?uuid={}&service={}'.format(self.uuid, public))
         self._failing_loader(rv.data)
         return public, secret
-    
+
     def test_subscription_invalid_delete(self):
         # Without a just-deleted service there's a chance to get an existing
         # one, as a test database isn't created when running tests.

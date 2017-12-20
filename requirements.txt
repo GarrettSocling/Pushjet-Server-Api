@@ -4,3 +4,4 @@ flask
 flask-sqlalchemy
 pyzmq
 requests
+apns2
