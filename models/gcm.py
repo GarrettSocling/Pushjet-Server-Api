@@ -24,7 +24,7 @@ class Gcm(db.Model):
 
     def as_dict(self):
         data = {
-            "uuid": self.service.as_dict(),
+            "uuid": self.uuid,
             "gcm_registration_id": self.gcmId,
             "timestamp": int((self.timestamp_created - datetime.utcfromtimestamp(0)).total_seconds()),
         }
