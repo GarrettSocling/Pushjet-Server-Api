@@ -22,7 +22,7 @@ class Apns(db.Model):
 
     def as_dict(self):
         data = {
-            "uuid": self.service.as_dict(),
+            "uuid": self.uuid,
             "device_token": self.device_token,
             "timestamp": int((self.timestamp_created - datetime.utcfromtimestamp(0)).total_seconds()),
         }
@@ -55,7 +55,7 @@ class Apns(db.Model):
         if current_app.config['TESTING'] is True:
             current_app.config['TESTING_APNS'].append(data)
             return
-        payload = Payload(alert="Pushjet Notification", sound="default", badge=1)
+        payload = Payload(alert=data['service']['name'], sound="default", badge=1, custom=data)
         notifications = [Notification(token=token, payload=payload) for token in tokens]
         topic = 'me.elrod.iPushjet'
         client = APNsClient(apns_cert_path, use_sandbox=True, use_alternative_port=False)
