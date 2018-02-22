@@ -1,6 +1,6 @@
 #!/usr/bin/env python2.7
 # coding=utf-8
-from __future__ import unicode_literals
+
 from flask import Flask, jsonify, redirect, send_from_directory, request
 from sys import exit, stderr
 from os import getenv
@@ -19,11 +19,11 @@ gcm_enabled = True
 if config.google_api_key == '':
     stderr.write("WARNING: GCM disabled, please enter the google api key for gcm")
     gcm_enabled = False
-if not isinstance(config.google_gcm_sender_id, int):       
-    stderr.write("WARNING: GCM disabled, sender id is not an integer")     
-    gcm_enabled = False        
-elif config.google_gcm_sender_id == 0:     
-    stderr.write('WARNING: GCM disabled, invalid sender id found')     
+if not isinstance(config.google_gcm_sender_id, int):
+    stderr.write("WARNING: GCM disabled, sender id is not an integer")
+    gcm_enabled = False
+elif config.google_gcm_sender_id == 0:
+    stderr.write('WARNING: GCM disabled, invalid sender id found')
     gcm_enabled = False
 
 app = Flask(__name__)
@@ -32,8 +32,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = config.database_uri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 with app.app_context():
-    #db.engine.execute("SET NAMES 'utf8mb4' COLLATE 'utf8mb4_unicode_ci'") #mysql
-    db.engine.execute("SET NAMES 'utf8'") #pgsql
+    db.engine.execute("SET NAMES 'utf8mb4' COLLATE 'utf8mb4_unicode_ci'") #mysql
+    #db.engine.execute("SET NAMES 'utf8'") #pgsql
 
 
 @app.route('/')

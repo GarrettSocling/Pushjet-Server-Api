@@ -59,15 +59,15 @@ def service_delete(service):
         for l in subscriptions:
             send_later.append(json_encode({'subscription': l.as_dict()}))
 
-    map(db.session.delete, subscriptions)  # Delete all subscriptions
-    map(db.session.delete, messages)  # Delete all messages
+    list(map(db.session.delete, subscriptions))  # Delete all subscriptions
+    list(map(db.session.delete, messages))  # Delete all messages
     db.session.delete(service)
 
     db.session.commit()
 
     # Notify that the subscriptions have been deleted
     if zeromq_relay_uri:
-        map(queue_zmq_message, send_later)
+        list(map(queue_zmq_message, send_later))
 
     return Error.NONE
 

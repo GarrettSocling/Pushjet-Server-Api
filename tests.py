@@ -1,5 +1,5 @@
 # coding=utf-8
-from __future__ import unicode_literals
+
 
 import os
 from uuid import uuid4
@@ -29,12 +29,12 @@ class PushjetTestCase(unittest.TestCase):
         self.app = app.test_client()
         self.app_real = app
 
-    def _random_str(self, length=10, unicode=True):
+    def _random_str(self, length=10, str=True):
         # A random string with the "cupcake" in Japanese appended to it
         # Always make sure that there is some unicode in there
         random_str = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(length))
 
-        if unicode:
+        if str:
             random_str = random_str[:-7] + 'カップケーキ'
             # It's important that the following is a 4+-byte Unicode character.
             random_str = '😉' + random_str
@@ -221,7 +221,7 @@ class PushjetTestCase(unittest.TestCase):
         # Test if patched
         rv = self.app.get('/service?service={}'.format(public))
         rv = self._failing_loader(rv.data)['service']
-        for key in data.keys():
+        for key in list(data.keys()):
             assert data[key] == rv[key]
 
     def test_uuid_regex(self):
@@ -239,7 +239,7 @@ class PushjetTestCase(unittest.TestCase):
         assert 'error' in rv and rv['error']['id'] is 7
 
     def test_gcm_register(self):
-        reg_id = self._random_str(40, unicode=False)
+        reg_id = self._random_str(40, str=False)
         data = {'uuid': self.uuid, 'regId': reg_id}
         rv = self.app.post('/gcm', data=data).data
         self._failing_loader(rv)
