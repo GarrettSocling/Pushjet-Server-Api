@@ -8,7 +8,6 @@ import requests
 
 gcm_url = 'https://android.googleapis.com/gcm/send'
 
-
 class Gcm(db.Model):
     id = db.Column(INTEGER(unsigned=True), primary_key=True)
     uuid = db.Column(db.VARCHAR(40), nullable=False)
@@ -42,8 +41,7 @@ class Gcm(db.Model):
         gcm_devices = Gcm.query.filter(Gcm.uuid.in_([l.device for l in subscriptions])).all()
 
         if len(gcm_devices) > 0:
-            data = dict(message=message.as_dict(), encrypted=False)
-            Gcm.gcm_send([r.gcmid for r in gcm_devices], data)
+            Gcm.gcm_send([r.gcmid for r in gcm_devices], message.as_notification())
 
         if len(gcm_devices) > 0:
             uuids = [g.uuid for g in gcm_devices]
@@ -59,9 +57,10 @@ class Gcm(db.Model):
     def gcm_send(ids, data):
         url = 'https://android.googleapis.com/gcm/send'
         headers = dict(Authorization='key={}'.format(google_api_key))
-        data = dict(registration_ids=ids, data=data)
+        data = dict(registration_ids=ids, notification=data)
 
         if current_app.config['TESTING'] is True:
             current_app.config['TESTING_GCM'].append(data)
         else:
             requests.post(url, json=data, headers=headers)
+            
