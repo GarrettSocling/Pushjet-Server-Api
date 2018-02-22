@@ -14,3 +14,6 @@ google_gcm_sender_id = 509878466986  # Change this to your gcm sender id
 # Message Queueing, this should be the relay. A "sane" value
 # for this would be something like ipc:///tmp/pushjet-relay.ipc
 zeromq_relay_uri = ''
+
+# Apple Push Notifications configuration (required for iOS!)
+apns_cert_path = '/etc/pki/tls/certs/apns.crt'

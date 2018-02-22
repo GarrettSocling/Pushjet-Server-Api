@@ -77,6 +77,24 @@ CREATE TABLE IF NOT EXISTS `gcm` (
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci;
 
+-- -----------------------------------------------------
+-- Table `apns`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `apns`;
+
+-- uuid is used to key on subscription only.
+-- device_token is the Apple given token which is of variable length.
+CREATE TABLE IF NOT EXISTS `apns` (
+  `id`                INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `uuid`              VARCHAR(40)      NOT NULL,
+  `device_token`      TEXT             NOT NULL,
+  `timestamp_created` TIMESTAMP        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci;
+
 SET SQL_MODE = @OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS = @OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS = @OLD_UNIQUE_CHECKS;
